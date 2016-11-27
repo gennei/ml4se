@@ -29,23 +29,29 @@ def create_dataset(num):
     return dataset
 
 # 平方根平均二乗誤差（Root mean square error）を計算
+# P.69 (2.20)
 def rms_error(dataset, f):
     err = 0.0
     for index, line in dataset.iterrows():
         x, y = line.x, line.y
         err += 0.5 * (y - f(x))**2
+
     return np.sqrt(2 * err / len(dataset))
 
 # 最小二乗法で解を求める
 def resolve(dataset, m):
-    t = dataset.y
+    t   = dataset.y
     phi = DataFrame()
+
     for i in range(0,m+1):
         p = dataset.x**i
-        p.name="x**%d" % i
+        p.name = "x**%d" % i
         phi = pd.concat([phi,p], axis=1)
-    tmp = np.linalg.inv(np.dot(phi.T, phi))
-    ws = np.dot(np.dot(tmp, phi.T), t)
+        print(phi)
+
+    # P.67 (2.18, 2.19)参照
+    tmp = np.linalg.inv(np.dot(phi.T, phi)) # 逆行列
+    ws  = np.dot(np.dot(tmp, phi.T), t) # 内積
 
     def f(x):
         y = 0
