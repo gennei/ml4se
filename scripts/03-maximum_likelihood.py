@@ -30,13 +30,17 @@ def create_dataset(num):
     return dataset
 
 # 最大対数尤度（Maximum log likelihood）を計算
+# (3.27) 参照
 def log_likelihood(dataset, f):
     dev = 0.0
     n = float(len(dataset))
+
     for index, line in dataset.iterrows():
         x, y = line.x, line.y
         dev += (y - f(x))**2
+
     err = dev * 0.5
+    # ここよくわからない
     beta = n / dev
     lp = -beta*err + 0.5*n*np.log(0.5*beta/np.pi)
     return lp
@@ -47,10 +51,12 @@ def resolve(dataset, m):
     phi = DataFrame()
     for i in range(0,m+1):
         p = dataset.x**i
-        p.name="x**%d" % i
+        p.name = "x**%d" % i
         phi = pd.concat([phi,p], axis=1)
+
+    # (3.20) 参照
     tmp = np.linalg.inv(np.dot(phi.T, phi))
-    ws = np.dot(np.dot(tmp, phi.T), t)
+    ws  = np.dot(np.dot(tmp, phi.T), t)
 
     def f(x):
         y = 0.0
@@ -58,9 +64,10 @@ def resolve(dataset, m):
             y += w * (x ** i)
         return y
 
+    # (3.22) 参照
     sigma2 = 0.0
     for index, line in dataset.iterrows():
-        sigma2 += (f(line.x)-line.y)**2
+        sigma2 += (f(line.x) - line.y)**2
     sigma2 /= len(dataset)
 
     return (f, ws, np.sqrt(sigma2))
