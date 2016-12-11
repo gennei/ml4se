@@ -30,7 +30,7 @@ def create_dataset(num):
     return dataset
 
 # 最大対数尤度（Maximum log likelihood）を計算
-# (3.27) 参照
+# (3.14) 参照
 def log_likelihood(dataset, f):
     dev = 0.0
     n = float(len(dataset))

@@ -66,4 +66,3 @@ if __name__ == '__main__':
     fig1.show()
     fig2.show()
     fig3.show()
-
