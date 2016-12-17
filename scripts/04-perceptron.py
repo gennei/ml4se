@@ -33,7 +33,7 @@ def prepare_dataset(variance):
     df1 = DataFrame(multivariate_normal(Mu1,cov1,N1),columns=['x','y'])
     df1['type'] = 1
     df2 = DataFrame(multivariate_normal(Mu2,cov2,N2),columns=['x','y'])
-    df2['type'] = -1 
+    df2['type'] = -1
     df = pd.concat([df1,df2],ignore_index=True)
     df = df.reindex(np.random.permutation(df.index)).reset_index(drop=True)
     return df
@@ -52,7 +52,7 @@ def run_simulation(variance, data_graph, param_graph):
 
     # パラメータの初期値とbias項の設定
     w0 = w1 = w2 = 0.0
-    bias = 0.5 * (train_set.x.mean() + train_set.y.mean())
+    bias = 0.5 * (train_set.x.mean() + train_set.y.mean()) # 式(4.30)参照
 
     # Iterationを30回実施
     paramhist = DataFrame([[w0,w1,w2]], columns=['w0','w1','w2'])
@@ -60,12 +60,14 @@ def run_simulation(variance, data_graph, param_graph):
         for index, point in train_set.iterrows():
             x, y, type = point.x, point.y, point.type
             if type * (w0*bias + w1*x + w2*y) <= 0:
-                w0 += type * 1 
+                w0 += type * 1
                 w1 += type * x
                 w2 += type * y
         paramhist = paramhist.append(
                         Series([w0,w1,w2], ['w0','w1','w2']),
                         ignore_index=True)
+
+    print(paramhist)
     # 判定誤差の計算
     err = 0
     for index, point in train_set.iterrows():
