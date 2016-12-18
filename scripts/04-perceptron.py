@@ -67,7 +67,6 @@ def run_simulation(variance, data_graph, param_graph):
                         Series([w0,w1,w2], ['w0','w1','w2']),
                         ignore_index=True)
 
-    print(paramhist)
     # 判定誤差の計算
     err = 0
     for index, point in train_set.iterrows():
