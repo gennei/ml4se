@@ -18,6 +18,9 @@ pd.options.mode.chained_assignment = None
 #------------#
 Variances = [5,10,30,50] # 両クラス共通の分散（4種類の分散で計算を実施）
 
+# ロジスティック関数
+def logistic(a):
+    return 1.0/(1.0+np.exp(-a))
 
 # データセット {x_n,y_n,type_n} を用意
 def prepare_dataset(variance):
@@ -51,12 +54,12 @@ def run_logistic(train_set, subplot):
         y = np.array([])
         for line in phi:
             a = np.dot(line, w)
-            y = np.append(y, [1.0/(1.0+np.exp(-a))])
-        r = np.diag(y*(1-y)) 
+            y = np.append(y, [1.0/(1.0+np.exp(-a))]) # 式(5.2)
+        r = np.diag(y*(1-y))  # 式(5.18)
         y = y[np.newaxis,:].T
-        tmp1 = np.linalg.inv(np.dot(np.dot(phi.T, r),phi))
+        tmp1 = np.linalg.inv(np.dot(np.dot(phi.T, r),phi)) # np.linalg.inv() 逆行列を求める
         tmp2 = np.dot(phi.T, (y-t))
-        w_new = w - np.dot(tmp1, tmp2)
+        w_new = w - np.dot(tmp1, tmp2) # 式(5.14)
         # パラメータの変化が 0.1% 未満になったら終了
         if np.dot((w_new-w).T, (w_new-w)) < 0.001 * np.dot(w.T, w):
             w = w_new
