@@ -71,7 +71,7 @@ def run_logistic(train_set, subplot):
     err = 0
     for index, point in train_set.iterrows():
         x, y, type = point.x, point.y, point.type
-        type = type * 2 - 1
+        type = type * 2 - 1 # type を (1, 0) to (1, -1) に変換している？ 
         if type * (w0 + w1*x + w2*y) < 0:
             err += 1
     err_rate = err * 100 / len(train_set)
