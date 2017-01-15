@@ -12,13 +12,12 @@ from PIL import Image
 #------------#
 # Parameters #
 #------------#
-Colors = [2, 3, 5, 16]  # 減色後の色数（任意の個数の色数を指定できます）
+Colors = [2]  # 減色後の色数（任意の個数の色数を指定できます）
 
 
 # k平均法による減色処理
 def run_kmeans(pixels, k):
     cls = [0] * len(pixels)
-
     # 代表色の初期値をランダムに設定
     center = []
     for i in range(k):
@@ -29,7 +28,7 @@ def run_kmeans(pixels, k):
     distortion = 0.0
 
     # 最大50回のIterationを実施
-    for iter_num in range(50): 
+    for iter_num in range(50):
         center_new = []
         for i in range(k):
             center_new.append(np.array([0,0,0]))
@@ -38,7 +37,7 @@ def run_kmeans(pixels, k):
 
         # E Phase: 各データが属するグループ（代表色）を計算
         for pix, point in enumerate(pixels):
-            min_dist = 256*256*3
+            min_dist = 256*256*3 # max value
             point = np.array(point)
             for i in range(k):
                 d = sum([x*x for x in point-center[i]])
@@ -53,6 +52,7 @@ def run_kmeans(pixels, k):
         for i in range(k):
             center_new[i] = center_new[i] / num_points[i]
         center = center_new
+        print(center)
         print map(lambda x: x.tolist(), center)
         print "Distortion: J=%d" % distortion_new
 
@@ -66,7 +66,7 @@ def run_kmeans(pixels, k):
         pixels[pix] = tuple(center[cls[pix]])
 
     return pixels
-        
+
 # Main
 if __name__ == '__main__':
     for k in Colors:
@@ -81,4 +81,3 @@ if __name__ == '__main__':
         # 画像データの更新とファイル出力
         im.putdata(result) # Update image
         im.save("output%02d.bmp" % k, "BMP")
-
