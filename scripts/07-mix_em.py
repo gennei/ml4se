@@ -33,7 +33,7 @@ def show_figure(mu, cls):
                 subplot = fig.add_subplot(K,7,c*7+i+1)
                 subplot.set_xticks([])
                 subplot.set_yticks([])
-                subplot.imshow(df.ix[j].reshape(28,28), cmap=plt.cm.gray_r)
+                subplot.imshow(df.ix[j].values.reshape(28,28), cmap=plt.cm.gray_r)
                 i += 1
                 if i > 6:
                     break
