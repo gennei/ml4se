@@ -61,6 +61,7 @@ if __name__ == '__main__':
     for k in range(K):
         mu[k] /= mu[k].sum()
 
+    # 分類の1番左のモザイクを表示する(初期パラメータの表示)
     fig = plt.figure()
     for k in range(K):
         subplot = fig.add_subplot(K, N+1, k*(N+1)+1)
@@ -74,6 +75,8 @@ if __name__ == '__main__':
         print "iter_num %d" % iter_num
 
         # E phase
+        # 現在のパラメータで尤度関数の条件付き確率に関する確率を計算する
+        # ref: https://ja.wikipedia.org/wiki/EM%E3%82%A2%E3%83%AB%E3%82%B4%E3%83%AA%E3%82%BA%E3%83%A0
         resp = DataFrame()
         for index, line in df.iterrows():
             tmp = []
@@ -89,6 +92,7 @@ if __name__ == '__main__':
             resp = resp.append([tmp], ignore_index=True)
 
         # M phase
+        # E step で求めたものを最大化する
         mu = np.zeros((K, 28*28))
         for k in range(K):
             nk = resp[k].sum()
