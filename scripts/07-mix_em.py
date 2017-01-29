@@ -88,7 +88,7 @@ if __name__ == '__main__':
                     s = 0.0
                     for kk in range(K):
                         s += mix[kk] * bern(line, mu[kk])
-                    tmp.append(a/s)
+                    tmp.append(a/s) #(式7.15)
             resp = resp.append([tmp], ignore_index=True)
 
         # M phase
@@ -96,10 +96,10 @@ if __name__ == '__main__':
         mu = np.zeros((K, 28*28))
         for k in range(K):
             nk = resp[k].sum()
-            mix[k] = nk/data_num
+            mix[k] = nk/data_num #(式7.17)
             for index, line in df.iterrows():
                 mu[k] += line * resp[k][index]
-            mu[k] /= nk
+            mu[k] /= nk #(式7.16)
 
             subplot = fig.add_subplot(K, N+1, k*(N+1)+(iter_num+1)+1)
             subplot.set_xticks([])
