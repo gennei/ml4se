@@ -21,7 +21,7 @@ def create_dataset(num):
     dataset = DataFrame(columns=['x','y'])
     for i in range(num):
         x = float(i)/float(num-1)
-        y = np.sin(2.0*np.pi*x) + normal(scale=0.3)
+        y = np.sin(2.0*np.pi*x) + normal(scale=0.3) # sinカーブ + 標準偏差0.3
         dataset = dataset.append(Series([x,y], index=['x','y']),
                                  ignore_index=True)
     return dataset
@@ -38,10 +38,10 @@ def resolve(dataset, m):
     for index, line in phis.iterrows():
         phi = DataFrame(line)
         if index == 0:
-            phiphi = np.dot(phi,phi.T)
+            phiphi = np.dot(phi, phi.T)
         else:
-            phiphi += np.dot(phi,phi.T)
-    s_inv = alpha * DataFrame(np.identity(m+1)) + beta * phiphi
+            phiphi += np.dot(phi, phi.T)
+    s_inv = alpha * DataFrame(np.identity(m+1)) + beta * phiphi # (8.67)
     s = np.linalg.inv(s_inv) # 事後分布の共分散行列
 
     # 平均 m(x)
@@ -65,7 +65,7 @@ def resolve(dataset, m):
             tmp = t[index] * line
         else:
             tmp += t[index] * line
-    mean = beta * np.dot(s, DataFrame(tmp)).flatten() # 事後分布の平均
+    mean = beta * np.dot(s, DataFrame(tmp)).flatten() # 事後分布の平均. (8.75)
 
     return mean_fun, deviation_fun, mean, s
 
@@ -127,4 +127,3 @@ if __name__ == '__main__':
 
     fig1.show()
     fig2.show()
-
