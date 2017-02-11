@@ -33,7 +33,7 @@ if __name__ == '__main__':
         mu_N = (beta_true*mu_ML + beta_0*mu_0/n)/(beta_true+beta_0/n)
         beta_N = beta_0 + n*beta_true
 
-    # 平均μの推定結果を表示
+        # 平均μの推定結果を表示
         subplot = fig1.add_subplot(2,2,c+1)
         subplot.set_title("N=%d" % n)
         linex = np.arange(-10,10.1,0.01)
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         subplot.set_ylim(0)
 
 
-    # 次に得られるデータの推定分布を表示
+        # 次に得られるデータの推定分布を表示
         subplot = fig2.add_subplot(2,2,c+1)
         subplot.set_title("N=%d" % n)
         linex = np.arange(-10,10.1,0.01)
@@ -74,4 +74,3 @@ if __name__ == '__main__':
 
     fig1.show()
     fig2.show()
-
