@@ -25,13 +25,15 @@ if __name__ == '__main__':
 
     fig1 = plt.figure()
     fig2 = plt.figure()
-    ds = normal(loc=mu_true, scale=1.0/beta_true, size=100)
+    ds = normal(loc=mu_true, scale=1.0/beta_true, size=100) # 100個の正規分布に従うデータを用意
 
     for c, n in enumerate([2,4,10,100]): # トレーニングセットのデータ数
+        # 用意したデータからn個取得
         trainset = ds[0:n]
         mu_ML = np.mean(trainset)
-        mu_N = (beta_true*mu_ML + beta_0*mu_0/n)/(beta_true+beta_0/n)
-        beta_N = beta_0 + n*beta_true
+        # mu_N = ((n * beta_true * mu_ML) + (beta_0 * mu_0)) / ((n * beta_true) + beta_0) # (8.46)
+        mu_N = ((beta_true * mu_ML) + ((beta_0 * mu_0) / n )) / (beta_true + (beta_0 / n)) # (8.46)の変形 ここでベイズが使われている。
+        beta_N = beta_0 + (n * beta_true) # (8.42)
 
         # 平均μの推定結果を表示
         subplot = fig1.add_subplot(2,2,c+1)
@@ -49,7 +51,6 @@ if __name__ == '__main__':
         subplot.scatter(trainset, [0.2]*n, marker='o', color='blue')
         subplot.set_xlim(-5,5)
         subplot.set_ylim(0)
-
 
         # 次に得られるデータの推定分布を表示
         subplot = fig2.add_subplot(2,2,c+1)
